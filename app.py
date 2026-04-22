@@ -17,6 +17,7 @@ def generate():
     <p>Customer: {name}</p>
     <p>Service: {service}</p>
     <p>Amount: ₹{amount}</p>
+    <a href="/">Go Back</a>
     """
 
 if __name__ == "__main__":
