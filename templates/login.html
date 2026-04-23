@@ -1,113 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login - Borewell System</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Login</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            background: linear-gradient(135deg, #2c3e50, #27ae60);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        .login-box {
-            background: white;
-            padding: 30px 25px;
-            border-radius: 15px;
-            width: 320px;
-            box-shadow: 0px 10px 25px rgba(0,0,0,0.3);
-            text-align: center;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        .title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
+body{
+    font-family:'Inter',sans-serif;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(-45deg,#ee7752,#e73c7e,#23a6d5,#23d5ab);
+    background-size:400% 400%;
+    animation:bg 15s ease infinite;
+}
 
-        .subtitle {
-            font-size: 13px;
-            color: gray;
-            margin-bottom: 20px;
-        }
+@keyframes bg{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 15px;
-            box-sizing: border-box;
-        }
+.login-card{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(25px);
+    border-radius:20px;
+    padding:40px;
+    width:100%;
+    max-width:400px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
 
-        input:focus {
-            border-color: #27ae60;
-            outline: none;
-        }
+.brand{text-align:center;margin-bottom:30px;}
+.brand i{font-size:40px;color:white;margin-bottom:10px;}
+.brand h1{color:white;}
+.brand p{color:#ddd;}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+.form-group{position:relative;margin-bottom:20px;}
 
-        button:hover {
-            background: #219150;
-        }
+.form-group input{
+    width:100%;
+    padding:15px 50px;
+    border:none;
+    border-radius:12px;
+    font-size:15px;
+}
 
-        .error {
-            color: red;
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
+.form-icon{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#555;
+}
 
-        .footer {
-            margin-top: 15px;
-            font-size: 11px;
-            color: gray;
-        }
-    </style>
+.eye{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    cursor:pointer;
+    color:#555;
+}
+
+.login-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.login-btn:hover{opacity:0.9;}
+
+.error{
+    color:red;
+    text-align:center;
+    margin-bottom:10px;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="login-box">
+<div class="login-card">
 
-    <div class="title">💧 Borewell System</div>
-    <div class="subtitle">Secure Login</div>
+<div class="brand">
+<i class="fas fa-shield-alt"></i>
+<h1>Secure Login</h1>
+<p>Enter your credentials</p>
+</div>
 
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% endif %}
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
 
-    <form method="POST">
+<form method="POST">
 
-        <input type="text" name="username" placeholder="👤 Username" required>
+<!-- USERNAME -->
+<div class="form-group">
+<i class="fas fa-user form-icon"></i>
+<input type="text" name="username" placeholder="Username" required>
+</div>
 
-        <input type="password" name="password" placeholder="🔒 Password" required>
+<!-- PASSWORD -->
+<div class="form-group">
+<i class="fas fa-lock form-icon"></i>
+<input type="password" id="password" name="password" placeholder="Password" required>
+<i class="fas fa-eye eye" id="togglePassword"></i>
+</div>
 
-        <button type="submit">Login</button>
+<button type="submit" class="login-btn">
+<i class="fas fa-arrow-right"></i> Login
+</button>
 
-    </form>
-
-    <div class="footer">
-        Powered by Harsha ⚡
-    </div>
+</form>
 
 </div>
+
+<script>
+const togglePassword = document.getElementById("togglePassword");
+const password = document.getElementById("password");
+
+togglePassword.onclick = function(){
+    if(password.type === "password"){
+        password.type = "text";
+        this.classList.remove("fa-eye");
+        this.classList.add("fa-eye-slash");
+    } else {
+        password.type = "password";
+        this.classList.remove("fa-eye-slash");
+        this.classList.add("fa-eye");
+    }
+};
+</script>
 
 </body>
 </html>
