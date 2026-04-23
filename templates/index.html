@@ -1,29 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bill App</title>
+    <title>Borewell Billing System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: linear-gradient(135deg, #141e30, #243b55);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            width: 380px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        h1 {
+            color: #243b55;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        input:focus {
+            border: 2px solid #243b55;
+        }
+
+        button {
+            width: 95%;
+            padding: 12px;
+            background: #243b55;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #141e30;
+        }
+
+        .tag {
+            margin-top: 10px;
+            font-size: 12px;
+            color: gray;
+        }
+    </style>
 </head>
 
-<body style="font-family:Arial; text-align:center; padding:20px;">
+<body>
 
-<h2>📄 Borewell Bill Generator</h2>
+<div class="card">
 
-<form action="/bill" method="POST">
+    <h1>💧 Borewell Billing</h1>
 
-    <input name="customer" placeholder="Customer Name" required><br><br>
+    <form action="/generate" method="POST">
 
-    <input name="depth" placeholder="Depth (feet)" required><br><br>
+        <input type="text" name="name" placeholder="Customer Name" required>
 
-    <input name="rate" placeholder="Rate per foot" required><br><br>
+        <input type="number" name="depth" placeholder="Depth (ft)" required>
 
-    <input name="advance" placeholder="Advance Paid" required><br><br>
+        <input type="number" name="rate" placeholder="Rate per ft" required>
 
-    <button type="submit" style="padding:10px;background:green;color:white;">
-        Generate PDF Bill
-    </button>
+        <input type="number" name="advance" placeholder="Advance Paid" required>
 
-</form>
+        <button type="submit">Generate Bill</button>
+
+    </form>
+
+    <div class="tag">Professional Billing System</div>
+
+</div>
 
 </body>
 </html>
