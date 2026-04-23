@@ -1,64 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Borewell Bill System</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f2f2f2;
-            text-align: center;
-            padding-top: 50px;
-        }
-
-        .box {
-            background: white;
-            padding: 20px;
-            width: 350px;
-            margin: auto;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px gray;
-        }
-
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 8px 0;
-        }
-
-        button {
-            padding: 10px;
-            width: 95%;
-            background: green;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: darkgreen;
-        }
-    </style>
+    <title>Borewell Bill</title>
 </head>
-
 <body>
 
-    <div class="box">
-        <h2>Borewell Bill Entry</h2>
+<h2>Borewell Bill Generator</h2>
 
-        <form action="/bill" method="POST">
+<form action="/generate" method="POST">
 
-            <input type="text" name="name" placeholder="Customer Name" required>
+    <input type="text" name="name" placeholder="Customer Name" required><br><br>
 
-            <input type="number" name="depth" placeholder="Depth (feet)" required>
+    <input type="number" name="depth" placeholder="Depth (feet)" required><br><br>
 
-            <input type="number" name="rate" placeholder="Rate per foot" required>
+    <input type="number" name="rate" placeholder="Rate per foot" required><br><br>
 
-            <input type="number" name="advance" placeholder="Advance Paid" required>
+    <input type="number" name="advance" placeholder="Advance Paid" required><br><br>
 
-            <button type="submit">Generate Bill</button>
+    <button type="submit">Generate PDF Bill</button>
 
-        </form>
-    </div>
+</form>
 
 </body>
 </html>
