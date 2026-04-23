@@ -1,86 +1,82 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, redirect, url_for, session, send_file
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from datetime import datetime
 import random
-import os
 
 app = Flask(__name__)
+app.secret_key = "harsha_secret_key_123"  # required for login session
 
 
-@app.route('/')
+# ---------------- LOGIN PAGE ----------------
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # SIMPLE LOGIN (you can change later)
+        if username == "admin" and password == "1234":
+            session['user'] = username
+            return redirect('/home')
+        else:
+            return render_template("login.html", error="Invalid Credentials")
+
+    return render_template("login.html")
+
+
+# ---------------- HOME PAGE ----------------
+@app.route('/home')
 def home():
+    if 'user' not in session:
+        return redirect('/')
     return render_template("index.html")
 
 
+# ---------------- LOGOUT ----------------
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect('/')
+
+
+# ---------------- PDF GENERATOR ----------------
 @app.route('/generate', methods=['POST'])
-def generate_bill():
+def generate():
+    if 'user' not in session:
+        return redirect('/')
+
     name = request.form['name']
     depth = int(request.form['depth'])
     rate = int(request.form['rate'])
     advance = int(request.form['advance'])
 
-    # CALCULATION
     total = depth * rate
     balance = total - advance
 
-    # AUTO INFO
     date = datetime.now().strftime("%d-%m-%Y")
     bill_no = f"BW{random.randint(1000,9999)}"
 
-    # FILE NAME
     file_name = f"bill_{bill_no}.pdf"
 
-    # BUSINESS INFO
-    business_name = "HARSHAVARDHAN BOREWELLS"
-    phone = "Phone: 9618532962, 7013973292"
-    address = "Address: JULURPADU, MAIN ROAD, BHADRADRI KOTHAGUDEM"
-
-    # CREATE PDF
     c = canvas.Canvas(file_name, pagesize=A4)
-    page_width = 595
+    width = 595
 
-    # HEADER
-    c.setFont("Helvetica-Bold", 20)
-    c.drawCentredString(page_width/2, 800, business_name)
+    c.setFont("Helvetica-Bold", 18)
+    c.drawCentredString(width/2, 800, "HARSHAVARDHAN BOREWELLS")
 
     c.setFont("Helvetica", 10)
-    c.drawCentredString(page_width/2, 780, phone)
-    c.drawCentredString(page_width/2, 765, address)
+    c.drawString(50, 760, f"Bill No: {bill_no}")
+    c.drawString(50, 745, f"Date: {date}")
+    c.drawString(50, 730, f"Customer: {name}")
 
-    # BILL INFO
-    c.drawString(400, 740, f"Bill No: {bill_no}")
-    c.drawString(400, 725, f"Date: {date}")
-
-    # CUSTOMER
-    c.drawString(50, 740, f"Customer: {name}")
-
-    # LINE
     c.line(50, 710, 550, 710)
 
-    # TABLE
-    c.setFont("Helvetica-Bold", 12)
-    c.drawString(50, 690, "Description")
-    c.drawString(300, 690, "Details")
-    c.drawString(450, 690, "Amount")
-
-    c.setFont("Helvetica", 11)
-    c.drawString(50, 660, "Borewell Drilling")
-    c.drawString(300, 660, f"{depth} ft x ₹{rate}")
-    c.drawString(450, 660, f"₹{total}")
-
-    # LINE
-    c.line(50, 640, 550, 640)
-
-    # TOTALS
-    c.drawString(350, 610, f"Total: ₹{total}")
-    c.drawString(350, 590, f"Advance: ₹{advance}")
-    c.drawString(350, 570, f"Balance: ₹{balance}")
-
-    # FOOTER
-    c.drawString(50, 520, "Payment Mode: Cash / UPI")
-    c.drawString(50, 500, "Thank You! 🙏")
-    c.drawString(400, 500, "Signature")
+    c.drawString(50, 680, f"Depth: {depth} ft")
+    c.drawString(50, 660, f"Rate: {rate}")
+    c.drawString(50, 640, f"Total: {total}")
+    c.drawString(50, 620, f"Advance: {advance}")
+    c.drawString(50, 600, f"Balance: {balance}")
 
     c.save()
 
