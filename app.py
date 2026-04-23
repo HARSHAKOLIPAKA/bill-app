@@ -9,8 +9,6 @@ def home():
 
 @app.route('/bill', methods=['GET', 'POST'])
 def bill():
-    data = None
-
     if request.method == 'POST':
         name = request.form.get('name')
         depth = int(request.form.get('depth'))
@@ -20,17 +18,20 @@ def bill():
         total = depth * rate
         balance = total - advance
 
-        data = {
-            "name": name,
-            "depth": depth,
-            "rate": rate,
-            "advance": advance,
-            "total": total,
-            "balance": balance
-        }
+        return render_template(
+            "bill.html",
+            name=name,
+            depth=depth,
+            rate=rate,
+            advance=advance,
+            total=total,
+            balance=balance
+        )
 
-    return render_template("bill.html", data=data)
+    # If someone opens /bill directly
+    return "Please submit form first from home page"
 
 
 if __name__ == "__main__":
     app.run()
+    
