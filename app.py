@@ -2,14 +2,18 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+# HOME PAGE (this is what opens on your link)
 @app.route("/")
 def home():
-    return "Hello, Bill App is working!"
+    return render_template("index.html")
 
-@app.route("/test")
-def test():
-    return "Test route working"
+# BILL SUBMIT PAGE
+@app.route("/bill", methods=["POST"])
+def bill():
+    customer = request.form.get("customer")
+    amount = request.form.get("amount")
+    return f"Bill created for {customer} - ₹{amount}"
 
+# IMPORTANT for Render
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
-    
+    app.run(host="0.0.0.0", port=5000)
