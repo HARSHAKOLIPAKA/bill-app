@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bill</title>
+    <title>Invoice</title>
 </head>
-<body>
 
-<h2>KOLIPAKA BOREWELLS</h2>
+<body style="font-family:Arial; padding:20px;">
 
-<p>Customer: {{customer}}</p>
-<p>Work: {{work}}</p>
-<p>Amount: ₹ {{amount}}</p>
+    <div style="text-align:center;">
+        <h2>🏪 Harsha Borewell Company</h2>
+        <p>Illapalle Kottapalem, Andhra Pradesh</p>
+        <hr>
+    </div>
+
+    <h3>🧾 INVOICE</h3>
+
+    <p><b>Bill No:</b> {{ bill_no }}</p>
+    <p><b>Customer Name:</b> {{ customer }}</p>
+    <p><b>Amount:</b> ₹{{ amount }}</p>
+
+    <hr>
+
+    <p style="text-align:center;">
+        Thank you for your business 🙏
+    </p>
 
 </body>
 </html>
