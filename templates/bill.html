@@ -1,76 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bill Preview</title>
-
-    <style>
-        body {
-            font-family: Arial;
-            background: #eef2f7;
-            display: flex;
-            justify-content: center;
-            padding: 40px;
-        }
-
-        .box {
-            background: white;
-            padding: 25px;
-            width: 420px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-        }
-
-        h2 {
-            text-align: center;
-            color: #243b55;
-        }
-
-        .row {
-            margin: 8px 0;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            background: #243b55;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            margin-top: 15px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background: #141e30;
-        }
-    </style>
+    <title>Bill Result</title>
 </head>
-
 <body>
 
-<div class="box">
+<h2>Bill Details</h2>
 
-    <h2>📄 Bill Preview</h2>
+<p>Name: {{ name }}</p>
+<p>Depth: {{ depth }}</p>
+<p>Rate: {{ rate }}</p>
+<p>Advance: {{ advance }}</p>
 
-    <p><b>Name:</b> {{name}}</p>
-    <p><b>Depth:</b> {{depth}}</p>
-    <p><b>Rate:</b> {{rate}}</p>
-    <p><b>Total:</b> {{total}}</p>
-    <p><b>Advance:</b> {{advance}}</p>
-    <p><b>Balance:</b> {{balance}}</p>
+<h3>Total: {{ total }}</h3>
+<h3>Balance: {{ balance }}</h3>
 
-    <form action="/pdf" method="POST">
-
-        <input type="hidden" name="name" value="{{name}}">
-        <input type="hidden" name="depth" value="{{depth}}">
-        <input type="hidden" name="rate" value="{{rate}}">
-        <input type="hidden" name="advance" value="{{advance}}">
-
-        <button class="btn">Download PDF</button>
-
-    </form>
-
-</div>
+<br>
+<a href="/">Go Back</a>
 
 </body>
 </html>
