@@ -1,92 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Borewell Billing System</title>
-
+    <title>Borewell Bill System</title>
     <style>
         body {
-            margin: 0;
-            font-family: 'Segoe UI';
-            background: linear-gradient(135deg, #141e30, #243b55);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .card {
-            background: white;
-            width: 380px;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            font-family: Arial;
+            background: #f2f2f2;
             text-align: center;
+            padding-top: 50px;
         }
 
-        h1 {
-            color: #243b55;
-            margin-bottom: 20px;
+        .box {
+            background: white;
+            padding: 20px;
+            width: 350px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
         }
 
         input {
             width: 90%;
             padding: 10px;
             margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-
-        input:focus {
-            border: 2px solid #243b55;
         }
 
         button {
+            padding: 10px;
             width: 95%;
-            padding: 12px;
-            background: #243b55;
+            background: green;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-top: 10px;
             cursor: pointer;
         }
 
         button:hover {
-            background: #141e30;
-        }
-
-        .tag {
-            margin-top: 10px;
-            font-size: 12px;
-            color: gray;
+            background: darkgreen;
         }
     </style>
 </head>
 
 <body>
 
-<div class="card">
+    <div class="box">
+        <h2>Borewell Bill Entry</h2>
 
-    <h1>💧 Borewell Billing</h1>
+        <form action="/bill" method="POST">
 
-    <form action="/generate" method="POST">
+            <input type="text" name="name" placeholder="Customer Name" required>
 
-        <input type="text" name="name" placeholder="Customer Name" required>
+            <input type="number" name="depth" placeholder="Depth (feet)" required>
 
-        <input type="number" name="depth" placeholder="Depth (ft)" required>
+            <input type="number" name="rate" placeholder="Rate per foot" required>
 
-        <input type="number" name="rate" placeholder="Rate per ft" required>
+            <input type="number" name="advance" placeholder="Advance Paid" required>
 
-        <input type="number" name="advance" placeholder="Advance Paid" required>
+            <button type="submit">Generate Bill</button>
 
-        <button type="submit">Generate Bill</button>
-
-    </form>
-
-    <div class="tag">Professional Billing System</div>
-
-</div>
+        </form>
+    </div>
 
 </body>
 </html>
