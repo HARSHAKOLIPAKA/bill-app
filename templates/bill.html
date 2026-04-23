@@ -1,33 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Invoice</title>
+    <title>Bill Preview</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2f7;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            width: 420px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #243b55;
+        }
+
+        .row {
+            margin: 8px 0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #243b55;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #141e30;
+        }
+    </style>
 </head>
 
-<body style="font-family:Arial; padding:20px; background:#f5f5f5;">
+<body>
 
-    <div style="text-align:center; background:white; padding:20px; border-radius:10px;">
-        
-        <h2>🏪 Harsha Borewell Company</h2>
-        <p>Illapalle Kottapalem, Andhra Pradesh</p>
-        <hr>
+<div class="box">
 
-        <h3>🧾 INVOICE</h3>
+    <h2>📄 Bill Preview</h2>
 
-        <!-- BILL NUMBER -->
-        <p><b>Bill No:</b> {{ bill_no }}</p>
+    <p><b>Name:</b> {{name}}</p>
+    <p><b>Depth:</b> {{depth}}</p>
+    <p><b>Rate:</b> {{rate}}</p>
+    <p><b>Total:</b> {{total}}</p>
+    <p><b>Advance:</b> {{advance}}</p>
+    <p><b>Balance:</b> {{balance}}</p>
 
-        <!-- CUSTOMER NAME -->
-        <p><b>Customer Name:</b> {{ customer }}</p>
+    <form action="/pdf" method="POST">
 
-        <!-- AMOUNT -->
-        <p><b>Amount:</b> ₹{{ amount }}</p>
+        <input type="hidden" name="name" value="{{name}}">
+        <input type="hidden" name="depth" value="{{depth}}">
+        <input type="hidden" name="rate" value="{{rate}}">
+        <input type="hidden" name="advance" value="{{advance}}">
 
-        <hr>
+        <button class="btn">Download PDF</button>
 
-        <p>Thank you for your business 🙏</p>
+    </form>
 
-    </div>
+</div>
 
 </body>
 </html>
