@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Harsha Chat</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        .chat-box {
+            width: 60%;
+            margin: auto;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            height: 400px;
+            overflow-y: scroll;
+        }
+
+        .msg {
+            background: #334155;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>💬 Harsha Messaging App</h2>
+
+<div class="chat-box">
+    {% for msg in messages %}
+        <div class="msg">
+            <b>{{ msg.user }}</b> ({{ msg.time }}):<br>
+            {{ msg.text }}
+        </div>
+    {% endfor %}
+</div>
+
+<form action="/send" method="post">
+    <input type="text" name="username" placeholder="Your name" required>
+    <input type="text" name="message" placeholder="Type message..." required>
+    <button type="submit">Send</button>
+</form>
+
+</body>
+</html>
