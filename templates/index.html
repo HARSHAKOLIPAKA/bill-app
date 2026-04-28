@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat App - Start Chatting</title>
 
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+height:100vh;
+background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:white;
+overflow:hidden;
+}
+
+.container{text-align:center;max-width:600px;}
+
+.logo{font-size:4em;margin-bottom:20px;}
+h1{font-size:2.5em;margin-bottom:10px;}
+.subtitle{margin-bottom:40px;opacity:0.9;}
+
+input{
+padding:15px 20px;
+border:none;
+border-radius:30px;
+width:250px;
+margin-bottom:20px;
+outline:none;
+}
+
+.chat-btn{
+padding:15px 35px;
+border:none;
+border-radius:50px;
+background:white;
+color:#333;
+font-weight:bold;
+cursor:pointer;
+}
+
+.chat-btn:hover{opacity:0.9;}
+
+.features{
+display:flex;
+gap:30px;
+margin-top:40px;
+justify-content:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">💬</div>
+<h1>Chat App</h1>
+<p class="subtitle">Start chatting now!</p>
+
+<!-- 🔥 IMPORTANT CHANGE (FORM instead of link) -->
+<form method="POST">
+<input type="text" name="username" placeholder="Enter username" required>
+<br>
+<button class="chat-btn">🚀 Start Chat</button>
+</form>
+
+<div class="features">
+<div>⚡ Real-time</div>
+<div>📱 Mobile</div>
+<div>🎨 UI</div>
+</div>
+
+</div>
+
+</body>
+</html>
