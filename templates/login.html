@@ -2,66 +2,18 @@
 <html>
 <head>
 <title>Login</title>
-
-<style>
-body {
-    font-family: Arial;
-    background: linear-gradient(135deg, #74ebd5, #9face6);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.box {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    width: 300px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background: #4facfe;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-a {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-}
-</style>
-
 </head>
-
 <body>
-
-<div class="box">
 
 <h2>Login</h2>
 
 <form method="POST">
-    <input name="username" placeholder="Username" required>
-    <button type="submit">Login</button>
+<input name="username" placeholder="Username"><br><br>
+<input name="password" type="password" placeholder="Password"><br><br>
+<button>Login</button>
 </form>
 
-<a href="/register">Create account</a>
-
-</div>
+<a href="/register">Register</a>
 
 </body>
 </html>
