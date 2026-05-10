@@ -1,129 +1,142 @@
 from flask import Flask, render_template, request, redirect, session
-from flask_socketio import SocketIO, emit
 import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "super_secret_key"
+app.secret_key = "secret123"
 
-socketio = SocketIO(app, cors_allowed_origins="*")
+# ================= DATABASE =================
 
-# ---------------- DATABASE ----------------
-def init_db():
-    conn = sqlite3.connect("chat.db")
-    c = conn.cursor()
+def get_db():
+    conn = sqlite3.connect('chat.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE,
-        password TEXT
-    )
-    """)
+# Create tables
+conn = get_db()
 
-    c.execute("""
-    CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        sender TEXT,
-        message TEXT
-    )
-    """)
+conn.execute('''
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT
+)
+''')
 
-    conn.commit()
-    conn.close()
+conn.execute('''
+CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    message TEXT,
+    time TEXT
+)
+''')
 
-# ---------------- ONLINE USERS ----------------
-online_users = set()
+conn.commit()
+conn.close()
 
-# ---------------- ROUTES ----------------
+# ================= HOME =================
+
 @app.route('/')
 def home():
+    if 'username' in session:
+        return redirect('/chat')
     return redirect('/login')
 
-@app.route('/register', methods=['GET','POST'])
-def register():
-    if request.method == 'POST':
-        u = request.form['username']
-        p = request.form['password']
+# ================= REGISTER =================
 
-        conn = sqlite3.connect("chat.db")
-        c = conn.cursor()
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+
+    if request.method == 'POST':
+
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = get_db()
 
         try:
-            c.execute("INSERT INTO users (username,password) VALUES (?,?)", (u,p))
+            conn.execute(
+                'INSERT INTO users (username, password) VALUES (?, ?)',
+                (username, password)
+            )
+
             conn.commit()
+
+            return redirect('/login')
+
         except:
-            return "User already exists"
+            return "Username already exists"
 
-        return redirect('/login')
+    return render_template('register.html')
 
-    return render_template("register.html")
+# ================= LOGIN =================
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+
     if request.method == 'POST':
-        u = request.form['username']
-        p = request.form['password']
 
-        conn = sqlite3.connect("chat.db")
-        c = conn.cursor()
+        username = request.form['username']
+        password = request.form['password']
 
-        c.execute("SELECT * FROM users WHERE username=? AND password=?", (u,p))
-        user = c.fetchone()
+        conn = get_db()
+
+        user = conn.execute(
+            'SELECT * FROM users WHERE username=? AND password=?',
+            (username, password)
+        ).fetchone()
 
         if user:
-            session['user'] = u
+            session['username'] = username
             return redirect('/chat')
 
-        return "Invalid login"
+        return "Invalid username or password"
 
-    return render_template("login.html")
+    return render_template('login.html')
 
-@app.route('/chat')
+# ================= CHAT =================
+
+@app.route('/chat', methods=['GET', 'POST'])
 def chat():
-    if 'user' not in session:
+
+    if 'username' not in session:
         return redirect('/login')
 
-    return render_template("chat.html", user=session['user'])
+    username = session['username']
+
+    conn = get_db()
+
+    if request.method == 'POST':
+
+        message = request.form['message']
+        time = datetime.now().strftime('%H:%M')
+
+        conn.execute(
+            'INSERT INTO messages (username, message, time) VALUES (?, ?, ?)',
+            (username, message, time)
+        )
+
+        conn.commit()
+
+    messages = conn.execute(
+        'SELECT * FROM messages'
+    ).fetchall()
+
+    return render_template(
+        'chat.html',
+        messages=messages,
+        username=username
+    )
+
+# ================= LOGOUT =================
 
 @app.route('/logout')
 def logout():
-    user = session.get('user')
-    if user in online_users:
-        online_users.remove(user)
-
     session.clear()
     return redirect('/login')
 
-# ---------------- SOCKET CONNECT ----------------
-@socketio.on('connect')
-def connect():
-    user = session.get('user')
-    if user:
-        online_users.add(user)
-        emit("users", list(online_users), broadcast=True)
+# ================= RUN =================
 
-# ---------------- SOCKET DISCONNECT ----------------
-@socketio.on('disconnect')
-def disconnect():
-    user = session.get('user')
-    if user in online_users:
-        online_users.remove(user)
-        emit("users", list(online_users), broadcast=True)
-
-# ---------------- CHAT MESSAGE ----------------
-@socketio.on('message')
-def handle_message(msg):
-    user = session.get('user')
-
-    conn = sqlite3.connect("chat.db")
-    c = conn.cursor()
-    c.execute("INSERT INTO messages (sender,message) VALUES (?,?)", (user,msg))
-    conn.commit()
-    conn.close()
-
-    emit("message", {"user": user, "message": msg}, broadcast=True)
-
-# ---------------- START ----------------
-if __name__ == "__main__":
-    init_db()
-    socketio.run(app, host="0.0.0.0", port=10000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
